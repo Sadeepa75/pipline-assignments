@@ -5,21 +5,38 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building virtual environment...'
-                sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip install -r requirements.txt
-                '''
+                script {
+                    if (isUnix()) {
+                        sh '''
+                            python3 -m venv venv
+                            venv/bin/python -m pip install -r requirements.txt
+                        '''
+                    } else {
+                        bat '''
+                            python -m venv venv
+                            venv\\Scripts\\python.exe -m pip install -r requirements.txt
+                        '''
+                    }
+                }
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh '''
-                    . venv/bin/activate
-                    pytest --junitxml=test-reports/results.xml
-                '''
+                script {
+                    if (isUnix()) {
+                        bat '''
+                            mkdir -p test-reports
+                            venv/bin/python -m pytest --junitxml=test-reports/results.xml
+                        '''
+                    } else {
+                        bat '''
+                            if not exist test-reports mkdir test-reports
+                            venv\\Scripts\\python.exe -m pytest --junitxml=test-reports/results.xml
+                        '''
+                    }
+                }
             }
             post {
                 always {
