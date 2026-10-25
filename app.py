@@ -1,7 +1,7 @@
 def add(a, b):
     return a + b
 
-def substract(a, b):
+def subtract(a, b):      # <--- Make sure this is 'subtract', not 'substrac'
     return a - b
 
 def multiply(a, b):
