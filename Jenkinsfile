@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Building virtual environment...'
                 bat '''
-                    py -m venv venv
+                    "C:\\Users\\HP\\AppData\\Local\\Programs\\Python\\Python312\\python.exe" -m venv venv
                     call venv\\Scripts\\activate
                     python -m pip install --upgrade pip
                     pip install -r requirements.txt
